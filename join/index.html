@@ -76,7 +76,7 @@
                 <p><strong>Password:</strong> <span id="password"></span></p>
             </div>
             
-            <a href="https://apps.apple.com/app/6749831063" class="button">📲 Download Retrogram</a>
+            <a href="https://apps.apple.com/app/retrogram" class="button">📲 Download Retrogram</a>
             
             <p style="font-size: 14px; margin-top: 20px; opacity: 0.8;">
                 If you have the app installed, it should have opened automatically.
@@ -90,6 +90,8 @@
         const id = urlParams.get('id');
         const pwd = urlParams.get('pwd');
         
+        console.log('URL params:', { id, pwd }); // Debug log
+        
         if (id && pwd) {
             // Display the board info
             document.getElementById('boardId').textContent = id;
@@ -97,15 +99,20 @@
             
             // Try to open the app immediately
             const appUrl = `retrogram://join?id=${id}&pwd=${pwd}`;
+            console.log('Trying to open:', appUrl); // Debug log
             
-            // For iOS Safari, we need to try the redirect
-            window.location.href = appUrl;
+            // For iOS Safari, try multiple methods
+            setTimeout(() => {
+                window.location.href = appUrl;
+            }, 100);
             
             // Also try using a hidden iframe (works better on some browsers)
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = appUrl;
-            document.body.appendChild(iframe);
+            setTimeout(() => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = appUrl;
+                document.body.appendChild(iframe);
+            }, 200);
             
             // Show fallback after 3 seconds if app didn't open
             setTimeout(() => {
@@ -113,21 +120,13 @@
                 document.querySelector('.spinner').style.display = 'none';
             }, 3000);
             
-            // For Android/other browsers, also try window.open
-            setTimeout(() => {
-                try {
-                    window.open(appUrl, '_self');
-                } catch (e) {
-                    console.log('Could not open app URL');
-                }
-            }, 500);
-            
         } else {
             document.body.innerHTML = `
                 <div class="container">
                     <h1>❌ Invalid Link</h1>
                     <p>This link is missing required board information.</p>
-                    <a href="https://apps.apple.com/app/6749831063" class="button">📲 Get Retrogram</a>
+                    <p>Expected format: ?id=BOARD_ID&pwd=PASSWORD</p>
+                    <a href="https://apps.apple.com/app/retrogram" class="button">📲 Get Retrogram</a>
                 </div>
             `;
         }
