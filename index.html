@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retrogram - Join Board</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container { 
+            max-width: 400px; 
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .button { 
+            background: #007AFF; 
+            color: white; 
+            padding: 12px 24px; 
+            text-decoration: none; 
+            border-radius: 12px; 
+            display: inline-block; 
+            margin: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: #0056d3;
+            transform: translateY(-2px);
+        }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .board-info {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Join Retrogram Board</h1>
+        <div class="spinner"></div>
+        <p>Opening Retrogram app...</p>
+        
+        <div id="fallback" style="display: none;">
+            <h2>📱 Need the Retrogram App?</h2>
+            <p>Install Retrogram to join this board:</p>
+            
+            <div class="board-info">
+                <p><strong>Board ID:</strong> <span id="boardId"></span></p>
+                <p><strong>Password:</strong> <span id="password"></span></p>
+            </div>
+            
+            <a href="https://apps.apple.com/app/YOUR_APP_ID" class="button">📲 Download Retrogram</a>
+            
+            <p style="font-size: 14px; margin-top: 20px; opacity: 0.8;">
+                If you have the app installed, it should have opened automatically.
+                Otherwise, download the app and manually enter the board details above.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const pwd = urlParams.get('pwd');
+        
+        if (id && pwd) {
+            // Display the board info
+            document.getElementById('boardId').textContent = id;
+            document.getElementById('password').textContent = pwd;
+            
+            // Try to open the app immediately
+            const appUrl = `retrogram://join?id=${id}&pwd=${pwd}`;
+            
+            // For iOS Safari, we need to try the redirect
+            window.location.href = appUrl;
+            
+            // Also try using a hidden iframe (works better on some browsers)
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = appUrl;
+            document.body.appendChild(iframe);
+            
+            // Show fallback after 3 seconds if app didn't open
+            setTimeout(() => {
+                document.getElementById('fallback').style.display = 'block';
+                document.querySelector('.spinner').style.display = 'none';
+            }, 3000);
+            
+            // For Android/other browsers, also try window.open
+            setTimeout(() => {
+                try {
+                    window.open(appUrl, '_self');
+                } catch (e) {
+                    console.log('Could not open app URL');
+                }
+            }, 500);
+            
+        } else {
+            document.body.innerHTML = `
+                <div class="container">
+                    <h1>❌ Invalid Link</h1>
+                    <p>This link is missing required board information.</p>
+                    <a href="https://apps.apple.com/app/YOUR_APP_ID" class="button">📲 Get Retrogram</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
