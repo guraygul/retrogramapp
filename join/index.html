@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Retrogram - Join Board</title>
+    <title>Retrolog - Join Board</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
@@ -63,20 +63,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎯 Join Retrogram Board</h1>
+        <h1>🎯 Join Retrolog Board</h1>
         <div class="spinner"></div>
-        <p>Opening Retrogram app...</p>
+        <p>Opening Retrolog app...</p>
         
         <div id="fallback" style="display: none;">
-            <h2>📱 Need the Retrogram App?</h2>
-            <p>Install Retrogram to join this board:</p>
+            <h2>📱 Need the Retrolog App?</h2>
+            <p>Install Retrolog to join this board:</p>
             
             <div class="board-info">
                 <p><strong>Board ID:</strong> <span id="boardId"></span></p>
                 <p><strong>Password:</strong> <span id="password"></span></p>
             </div>
             
-            <a href="https://apps.apple.com/app/retrogram" class="button">📲 Download Retrogram</a>
+            <a href="https://apps.apple.com/app/retrolog" class="button">📲 Download Retrolog</a>
             
             <p style="font-size: 14px; margin-top: 20px; opacity: 0.8;">
                 If you have the app installed, it should have opened automatically.
@@ -98,7 +98,7 @@
             document.getElementById('password').textContent = pwd;
             
             // Try to open the app immediately
-            const appUrl = `retrogram://join?id=${id}&pwd=${pwd}`;
+            const appUrl = `retrolog://join?id=${id}&pwd=${pwd}`;
             console.log('Trying to open:', appUrl); // Debug log
             
             // For iOS Safari, try multiple methods
@@ -126,7 +126,7 @@
                     <h1>❌ Invalid Link</h1>
                     <p>This link is missing required board information.</p>
                     <p>Expected format: ?id=BOARD_ID&pwd=PASSWORD</p>
-                    <a href="https://apps.apple.com/app/retrogram" class="button">📲 Get Retrogram</a>
+                    <a href="https://apps.apple.com/app/retrolog" class="button">📲 Get Retrolog</a>
                 </div>
             `;
         }
